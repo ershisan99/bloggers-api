@@ -23,11 +23,12 @@ export async function findVideoById(id: string): Promise<Video | undefined> {
 }
 
 export async function updateVideoById(id: string, newVideo: CreateVideoInput): Promise<Video | undefined> {
-  let updatedVideo = videos.find((video) => video.id === Number(id));
-  if (updatedVideo) {
+  let videoToUpdate = videos.find((video) => video.id === Number(id));
+  let updatedVideo;
+  if (videoToUpdate) {
     updatedVideo = {
+      ...videoToUpdate,
       ...newVideo,
-      ...updatedVideo,
     };
   }
   return updatedVideo;
