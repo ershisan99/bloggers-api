@@ -1,10 +1,9 @@
-import request from 'supertest';
-import app from '../../../app';
-import { it, describe, expect } from 'vitest';
-import { Video } from './video.schema';
+import request from 'supertest'
+import app from '../../../app'
+import { it, describe, expect } from 'vitest'
+import { Video } from './video.schema'
 
-let createdVideo:Video;
-
+let createdVideo: Video
 
 describe('POST /videos', () => {
   it('responds with an error if the video is invalid', () => {
@@ -14,9 +13,9 @@ describe('POST /videos', () => {
       .send({})
       .expect(400)
       .then((response) => {
-        expect(response.body).toHaveProperty('errorsMessages');
-      });
-  });
+        expect(response.body).toHaveProperty('errorsMessages')
+      })
+  })
   it('responds with the created video', () => {
     return request(app)
       .post('/videos')
@@ -28,17 +27,17 @@ describe('POST /videos', () => {
       })
       .expect(201)
       .then((response) => {
-        createdVideo = response.body;
-        expect(response.body).toHaveProperty('id');
-        expect(response.body).toHaveProperty('createdAt');
-        expect(response.body).toHaveProperty('publicationDate');
-        expect(response.body).toHaveProperty('canBeDownloaded');
-        expect(response.body).toHaveProperty('title');
-        expect(response.body).toHaveProperty('author');
-        expect(response.body).toHaveProperty('availableResolutions');
-      });
-  });
-});
+        createdVideo = response.body
+        expect(response.body).toHaveProperty('id')
+        expect(response.body).toHaveProperty('createdAt')
+        expect(response.body).toHaveProperty('publicationDate')
+        expect(response.body).toHaveProperty('canBeDownloaded')
+        expect(response.body).toHaveProperty('title')
+        expect(response.body).toHaveProperty('author')
+        expect(response.body).toHaveProperty('availableResolutions')
+      })
+  })
+})
 
 describe('GET /videos', () => {
   it('responds with an array of videos', () => {
@@ -47,10 +46,10 @@ describe('GET /videos', () => {
       .set('Accept', 'application/json')
       .expect(200)
       .then((response) => {
-        expect(response.body).toEqual([createdVideo]);
-      });
-  });
-});
+        expect(response.body).toEqual([createdVideo])
+      })
+  })
+})
 
 describe('GET /videos/:id', () => {
   it('responds with an error if the video is not found', () => {
@@ -59,19 +58,19 @@ describe('GET /videos/:id', () => {
       .set('Accept', 'application/json')
       .expect(404)
       .then((response) => {
-        expect(response.body).toHaveProperty('errorsMessages');
-      });
-  });
+        expect(response.body).toHaveProperty('errorsMessages')
+      })
+  })
   it('responds with the video', () => {
     return request(app)
       .get(`/videos/${createdVideo.id}`)
       .set('Accept', 'application/json')
       .expect(200)
       .then((response) => {
-        expect(response.body).toEqual(createdVideo);
-      });
-  });
-});
+        expect(response.body).toEqual(createdVideo)
+      })
+  })
+})
 
 describe('PUT /videos/:id', () => {
   it('responds with an error if the video is not found', () => {
@@ -79,17 +78,15 @@ describe('PUT /videos/:id', () => {
       .put('/videos/4000')
       .set('Accept', 'application/json')
       .send({
-        'title': 'string',
-        'author': 'string',
-        'availableResolutions': [
-          'P144',
-        ],
-        'canBeDownloaded': true,
-        'minAgeRestriction': 18,
-        'publicationDate': '2023-01-30T11:05:56.132Z',
+        title: 'string',
+        author: 'string',
+        availableResolutions: ['P144'],
+        canBeDownloaded: true,
+        minAgeRestriction: 18,
+        publicationDate: '2023-01-30T11:05:56.132Z',
       })
-      .expect(404);
-  });
+      .expect(404)
+  })
   it('responds with an error if the video is invalid', () => {
     return request(app)
       .put(`/videos/${createdVideo.id}`)
@@ -97,27 +94,25 @@ describe('PUT /videos/:id', () => {
       .send({})
       .expect(400)
       .then((response) => {
-        expect(response.body).toHaveProperty('errorsMessages');
-      });
-  });
+        expect(response.body).toHaveProperty('errorsMessages')
+      })
+  })
 
   it('responds with 204 status', () => {
     return request(app)
       .put(`/videos/${createdVideo.id}`)
       .set('Accept', 'application/json')
       .send({
-        'title': 'string',
-        'author': 'string',
-        'availableResolutions': [
-          'P144',
-        ],
-        'canBeDownloaded': true,
-        'minAgeRestriction': 18,
-        'publicationDate': '2023-01-30T11:05:56.132Z',
+        title: 'string',
+        author: 'string',
+        availableResolutions: ['P144'],
+        canBeDownloaded: true,
+        minAgeRestriction: 18,
+        publicationDate: '2023-01-30T11:05:56.132Z',
       })
-      .expect(204);
-  });
-});
+      .expect(204)
+  })
+})
 
 describe('DELETE /videos/:id', () => {
   it('responds with an error if the video is not found', () => {
@@ -126,13 +121,13 @@ describe('DELETE /videos/:id', () => {
       .set('Accept', 'application/json')
       .expect(404)
       .then((response) => {
-        expect(response.body).toHaveProperty('errorsMessages');
-      });
-  });
+        expect(response.body).toHaveProperty('errorsMessages')
+      })
+  })
   it('responds with 204 status', () => {
     return request(app)
       .delete(`/videos/${createdVideo.id}`)
       .set('Accept', 'application/json')
-      .expect(204);
-  });
-});
+      .expect(204)
+  })
+})

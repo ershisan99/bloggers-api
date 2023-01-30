@@ -1,3 +1,3 @@
-import { Video } from './modules/video/video.schema';
+import { Video } from './modules/video/video.schema'
 
-export let videos: Video[] = [];
+export let videos: Video[] = []

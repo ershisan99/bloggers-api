@@ -1,9 +1,9 @@
-import { AnyZodObject } from 'zod';
+import { AnyZodObject } from 'zod'
 
 interface RequestValidators {
-  body?: AnyZodObject;
-  query?: AnyZodObject;
-  params?: AnyZodObject;
+  body?: AnyZodObject
+  query?: AnyZodObject
+  params?: AnyZodObject
 }
 
-export default RequestValidators;
+export default RequestValidators

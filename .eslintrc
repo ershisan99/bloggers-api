@@ -9,10 +9,14 @@
       "./tsconfig.json"
     ]
   },
-  "extends": "airbnb-typescript/base",
+  "extends": [
+    "airbnb-typescript/base",
+    "prettier"
+  ],
   "plugins": [
     "import",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "prettier"
   ],
   "rules": {
     "comma-dangle": 0,
@@ -21,7 +25,8 @@
     "no-return-assign": 0,
     "camelcase": 0,
     "import/extensions": 0,
-    "@typescript-eslint/no-redeclare": 0
+    "@typescript-eslint/no-redeclare": 0,
+    "prettier/prettier": "error"
   },
   "settings": {
     "import/parsers": {

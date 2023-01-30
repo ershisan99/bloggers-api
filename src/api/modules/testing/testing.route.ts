@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { deleteAllDataHandler } from './testing.controller';
+import { Router } from 'express'
+import { deleteAllDataHandler } from './testing.controller'
 
-export const TestingRouter = Router();
+export const TestingRouter = Router()
 
-TestingRouter.delete('/all-data', deleteAllDataHandler);
+TestingRouter.delete('/all-data', deleteAllDataHandler)
