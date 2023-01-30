@@ -8,10 +8,10 @@ export async function findVideos(): Promise<Video[]> {
 export async function createVideo(video: CreateVideoInput): Promise<Video> {
   const newVideo = {
     id: videos.length,
-    createdAt: new Date().toISOString(),
     publicationDate: new Date().toISOString(),
     canBeDownloaded: true,
     ...video,
+    createdAt: new Date().toISOString(),
   };
   videos.push(newVideo);
   return newVideo;
