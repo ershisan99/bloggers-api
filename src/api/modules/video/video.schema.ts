@@ -20,5 +20,5 @@ export type Video = z.infer<typeof VideoSchema>;
 
 
 
-export const CreateVideoInputSchema = VideoSchema.omit({ id: true, createdAt: true, publicationDate: true });
+export const CreateVideoInputSchema = VideoSchema.omit({ id: true, createdAt: true });
 export type CreateVideoInput = z.infer<typeof CreateVideoInputSchema>;
