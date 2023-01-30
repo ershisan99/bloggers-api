@@ -10,6 +10,7 @@ export async function createVideo(video: CreateVideoInput): Promise<Video> {
     id: videos.length,
     publicationDate: new Date().toISOString(),
     canBeDownloaded: false,
+    minAgeRestriction: null,
     ...video,
     createdAt: new Date().toISOString(),
   };
@@ -25,8 +26,8 @@ export async function updateVideoById(id: string, newVideo: CreateVideoInput): P
   let updatedVideo = videos.find((video) => video.id === Number(id));
   if (updatedVideo) {
     updatedVideo = {
-      ...updatedVideo,
       ...newVideo,
+      ...updatedVideo,
     };
   }
   return updatedVideo;
