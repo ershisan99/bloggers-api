@@ -71,5 +71,6 @@ typings/
 
 # Serverless directories
 .serverless
-
 dist
+
+.idea

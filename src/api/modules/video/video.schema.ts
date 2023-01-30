@@ -7,7 +7,7 @@ export const VideoSchema = z.object({
   title: z.string({ required_error: 'Title is required' }).max(40, { message: 'Title is too long' }),
   author: z.string({ required_error: 'Author is required' }).max(20, { message: 'Author is too long' }),
   canBeDownloaded: z.boolean().optional(),
-  minAgeRestriction: z.number().nullish(),
+  minAgeRestriction: z.number().min(1).max(18).nullish(),
   createdAt: z.string(),
   publicationDate: z.string().optional(),
   availableResolutions: z.array(z.enum(resolutions, {
