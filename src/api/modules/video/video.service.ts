@@ -1,5 +1,6 @@
 import { CreateVideoInput, Video } from './video.schema';
 import { videos } from '../../db';
+import { addDays } from '../../utils/add-days';
 
 export async function findVideos(): Promise<Video[]> {
   return videos;
@@ -8,11 +9,13 @@ export async function findVideos(): Promise<Video[]> {
 export async function createVideo(video: CreateVideoInput): Promise<Video> {
   const newVideo = {
     id: videos.length,
-    publicationDate: new Date().toISOString(),
     canBeDownloaded: false,
     minAgeRestriction: null,
     ...video,
     createdAt: new Date().toISOString(),
+    get publicationDate() {
+      return video?.publicationDate || addDays(new Date(), 1).toISOString();
+    },
   };
   videos.push(newVideo);
   return newVideo;
@@ -24,7 +27,6 @@ export async function findVideoById(id: string): Promise<Video | undefined> {
 
 export async function updateVideoById(id: string, newVideo: CreateVideoInput): Promise<Video | undefined> {
   let videoToUpdate = videos.find((video) => video.id === Number(id));
-  console.log(videoToUpdate);
   if (videoToUpdate) {
     videoToUpdate = {
       ...videoToUpdate,
