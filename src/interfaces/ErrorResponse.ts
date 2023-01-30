@@ -1,3 +1,3 @@
 export default interface ErrorResponse {
-  errorMessages: Array<{ message: string, field?: string }>;
+  errorsMessages: Array<{ message: string, field?: string }>;
 }

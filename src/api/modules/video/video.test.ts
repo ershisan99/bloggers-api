@@ -14,7 +14,7 @@ describe('POST /videos', () => {
       .send({})
       .expect(400)
       .then((response) => {
-        expect(response.body).toHaveProperty('errorMessages');
+        expect(response.body).toHaveProperty('errorsMessages');
       });
   });
   it('responds with the created video', () => {
@@ -59,7 +59,7 @@ describe('GET /videos/:id', () => {
       .set('Accept', 'application/json')
       .expect(404)
       .then((response) => {
-        expect(response.body).toHaveProperty('errorMessages');
+        expect(response.body).toHaveProperty('errorsMessages');
       });
   });
   it('responds with the video', () => {
@@ -97,7 +97,7 @@ describe('PUT /videos/:id', () => {
       .send({})
       .expect(400)
       .then((response) => {
-        expect(response.body).toHaveProperty('errorMessages');
+        expect(response.body).toHaveProperty('errorsMessages');
       });
   });
 
@@ -126,7 +126,7 @@ describe('DELETE /videos/:id', () => {
       .set('Accept', 'application/json')
       .expect(404)
       .then((response) => {
-        expect(response.body).toHaveProperty('errorMessages');
+        expect(response.body).toHaveProperty('errorsMessages');
       });
   });
   it('responds with 204 status', () => {

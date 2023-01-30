@@ -16,14 +16,14 @@ export function errorHandler(err: Error, req: Request, res: Response<ErrorRespon
     const statusCode = 400;
     res.status(statusCode);
     res.json({
-      errorMessages: err.issues.map((issue) => ({ message: issue.message, field: issue.path[0].toString() })),
+      errorsMessages: err.issues.map((issue) => ({ message: issue.message, field: issue.path[0].toString() })),
     });
     return;
   }
   const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
   res.status(statusCode);
   res.json({
-    errorMessages: [{ message: err.message }],
+    errorsMessages: [{ message: err.message }],
   });
 }
 
