@@ -30,6 +30,8 @@ export async function updateVideoById(id: string, newVideo: CreateVideoInput): P
       ...videoToUpdate,
       ...newVideo,
     };
+    videoToUpdate = updatedVideo;
+
   }
   return updatedVideo;
 }
