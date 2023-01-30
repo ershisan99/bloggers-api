@@ -4,8 +4,8 @@ const resolutions = ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', '
 
 export const VideoSchema = z.object({
   id: z.number(),
-  title: z.string({ required_error: 'Title is required' }),
-  author: z.string({ required_error: 'Author is required' }),
+  title: z.string({ required_error: 'Title is required' }).max(40, { message: 'Title is too long' }),
+  author: z.string({ required_error: 'Author is required' }).max(20, { message: 'Author is too long' }),
   canBeDownloaded: z.boolean().optional(),
   minAgeRestriction: z.number().nullish(),
   createdAt: z.string(),
