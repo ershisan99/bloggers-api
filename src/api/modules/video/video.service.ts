@@ -7,15 +7,14 @@ export async function findVideos(): Promise<Video[]> {
 }
 
 export async function createVideo(video: CreateVideoInput): Promise<Video> {
+  const createdAt = new Date().toISOString();
   const newVideo = {
     id: videos.length,
     canBeDownloaded: false,
     minAgeRestriction: null,
     ...video,
-    createdAt: new Date().toISOString(),
-    get publicationDate() {
-      return video?.publicationDate || addDays(new Date(), 1).toISOString();
-    },
+    createdAt,
+    publicationDate: video?.publicationDate || addDays(createdAt, 1).toISOString(),
   };
   videos.push(newVideo);
   return newVideo;
