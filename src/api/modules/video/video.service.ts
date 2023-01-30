@@ -9,7 +9,7 @@ export async function createVideo(video: CreateVideoInput): Promise<Video> {
   const newVideo = {
     id: videos.length,
     publicationDate: new Date().toISOString(),
-    canBeDownloaded: true,
+    canBeDownloaded: false,
     ...video,
     createdAt: new Date().toISOString(),
   };
