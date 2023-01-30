@@ -11,7 +11,7 @@ export function notFound(req: Request, res: Response, next: NextFunction) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function errorHandler(err: Error, req: Request, res: Response<ErrorResponse>) {
+export function errorHandler(err: Error, req: Request, res: Response<ErrorResponse>, next: NextFunction) {
   if (err instanceof ZodError) {
     const statusCode = 400;
     res.status(statusCode);
