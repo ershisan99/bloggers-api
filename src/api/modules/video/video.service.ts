@@ -24,16 +24,18 @@ export async function findVideoById(id: string): Promise<Video | undefined> {
 
 export async function updateVideoById(id: string, newVideo: CreateVideoInput): Promise<Video | undefined> {
   let videoToUpdate = videos.find((video) => video.id === Number(id));
-  let updatedVideo;
+  console.log(videoToUpdate);
   if (videoToUpdate) {
-    updatedVideo = {
+    videoToUpdate = {
       ...videoToUpdate,
       ...newVideo,
     };
-    videoToUpdate = updatedVideo;
 
   }
-  return updatedVideo;
+  console.log(videoToUpdate);
+  // @ts-ignore
+  videos = videos.map((video) => video.id === Number(id) ? videoToUpdate : video);
+  return videoToUpdate;
 }
 
 export async function deleteVideoById(id: string): Promise<Video | undefined> {
