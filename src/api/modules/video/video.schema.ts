@@ -9,7 +9,7 @@ export const VideoSchema = z.object({
   canBeDownloaded: z.boolean().optional(),
   minAgeRestriction: z.number().nullish(),
   createdAt: z.string(),
-  publicationDate: z.string(),
+  publicationDate: z.string().optional(),
   availableResolutions: z.array(z.enum(resolutions, {
     invalid_type_error: 'Invalid resolution',
     required_error: 'At least one resolution is required',
