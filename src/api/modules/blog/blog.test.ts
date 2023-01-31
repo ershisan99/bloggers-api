@@ -108,18 +108,32 @@ describe('PUT /blogs/:id', () => {
       .set('Authorization', token)
       .set('Accept', 'application/json')
       .send(updatedBlog)
-      .expect(200)
+      .expect(204)
+  })
+})
+
+describe('DELETE /blogs/:id', () => {
+  it('responds with 401 if no auth header wad found', () => {
+    return request(app)
+      .delete(`/blogs/${createdBlog.id}`)
+      .set('Accept', 'application/json')
+      .expect(401)
+  })
+  it('responds with an error if the blog is not found', () => {
+    return request(app)
+      .delete('/blogs/4000')
+      .set('Accept', 'application/json')
+      .set('Authorization', token)
+      .expect(404)
       .then((response) => {
-        expect(response.body).toHaveProperty('id', createdBlog.id)
-        expect(response.body).toHaveProperty('name', updatedBlog.name)
-        expect(response.body).toHaveProperty(
-          'description',
-          updatedBlog.description,
-        )
-        expect(response.body).toHaveProperty(
-          'websiteUrl',
-          updatedBlog.websiteUrl,
-        )
+        expect(response.body.errorsMessages).toHaveLength(1)
       })
+  })
+  it('responds with 204', () => {
+    return request(app)
+      .delete(`/blogs/${createdBlog.id}`)
+      .set('Authorization', token)
+      .set('Accept', 'application/json')
+      .expect(204)
   })
 })

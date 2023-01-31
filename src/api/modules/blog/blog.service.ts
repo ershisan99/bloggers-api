@@ -36,3 +36,11 @@ export async function updateBlogById(
 
   return undefined
 }
+
+export async function deleteBlogById(id: string): Promise<Blog | undefined> {
+  const blogIndex = blogs.findIndex((blog) => blog.id === id)
+  if (blogIndex !== -1) {
+    return blogs.splice(blogIndex, 1)[0]
+  }
+  return undefined
+}

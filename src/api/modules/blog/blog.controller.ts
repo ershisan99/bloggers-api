@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { Blog } from './blog.schema'
 import {
   createBlog,
+  deleteBlogById,
   findBlogById,
   findBlogs,
   updateBlogById,
@@ -60,7 +61,24 @@ export async function updateBlogHandler(
       res.status(404)
       throw new Error('Blog not found')
     }
-    res.json(blog)
+    res.sendStatus(204)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export async function deleteBlogHandler(
+  req: Request<{ id: string }>,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const blog = await deleteBlogById(req.params.id)
+    if (!blog) {
+      res.status(404)
+      throw new Error('Blog not found')
+    }
+    res.sendStatus(204)
   } catch (error) {
     next(error)
   }

@@ -3,6 +3,7 @@ import { validateBasicAuth, validateRequest } from '../../../middlewares'
 import { CreateBlogInputSchema } from './blog.schema'
 import {
   createBlogHandler,
+  deleteBlogHandler,
   getBlogHandler,
   getBlogsHandler,
   updateBlogHandler,
@@ -26,3 +27,5 @@ blogRouter.put(
   validateRequest({ body: CreateBlogInputSchema }),
   updateBlogHandler,
 )
+
+blogRouter.delete('/:id', validateBasicAuth, deleteBlogHandler)
