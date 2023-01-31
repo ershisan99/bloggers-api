@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { deleteAllDataHandler } from './testing.controller'
 
-export const TestingRouter = Router()
+export const testingRouter = Router()
 
-TestingRouter.delete('/all-data', deleteAllDataHandler)
+testingRouter.delete('/all-data', deleteAllDataHandler)

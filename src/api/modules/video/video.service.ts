@@ -1,6 +1,8 @@
 import { CreateVideoInput, Video } from './video.schema'
-import { videos } from '../../db'
+import { db } from '../../db'
 import { addDays } from '../../utils/add-days'
+
+const videos = db.videos
 
 export async function findVideos(): Promise<Video[]> {
   return videos
@@ -29,19 +31,17 @@ export async function updateVideoById(
   id: string,
   newVideo: CreateVideoInput,
 ): Promise<Video | undefined> {
-  let videoToUpdate = videos.find((video) => video.id === Number(id))
-  if (videoToUpdate) {
-    videoToUpdate = {
-      ...videoToUpdate,
+  let videoToUpdate = videos.findIndex((video) => video.id === Number(id))
+
+  if (videoToUpdate !== -1) {
+    videos.splice(videoToUpdate, 1, {
+      ...videos[videoToUpdate],
       ...newVideo,
-    }
+    })
+    return videos[videoToUpdate]
   }
-  console.log(videoToUpdate)
-  // @ts-ignore
-  videos = videos.map((video) =>
-    video.id === Number(id) ? videoToUpdate : video,
-  )
-  return videoToUpdate
+
+  return undefined
 }
 
 export async function deleteVideoById(id: string): Promise<Video | undefined> {
