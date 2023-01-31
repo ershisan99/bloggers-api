@@ -5,10 +5,12 @@ const websiteRegex = new RegExp(
 )
 
 export const BlogSchema = z.object({
-  id: z.string(),
   name: z
     .string({ required_error: 'Name is required' })
+    .trim()
+    .min(1, 'Name is too short')
     .max(15, 'Name is too long'),
+  id: z.string(),
   description: z
     .string({
       required_error: 'Description is required',
