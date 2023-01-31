@@ -63,13 +63,18 @@ export function validateBasicAuth(
   const auth = { login: 'admin', password: 'qwerty' } // change this
 
   const b64auth = (req.headers.authorization || '').split(' ')[1] || ''
+  const authType = (req.headers.authorization || '').split(' ')[0] || ''
+
   const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':')
 
-  if (login && password && login === auth.login && password === auth.password) {
-    return next()
+  if (
+    authType !== 'Basic' ||
+    login !== auth.login ||
+    password !== auth.password
+  ) {
+    res.status(401).send('Authentication required.')
+    return
   }
 
-  res.status(401).send('Authentication required.') // custom message
-
-  // -----------------------------------------------------------------------
+  return next()
 }
