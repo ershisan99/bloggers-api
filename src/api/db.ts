@@ -4,6 +4,13 @@ import { Post } from './modules/post/post.schema'
 
 export const db = {
   videos: [] as Video[],
-  blogs: [] as Blog[],
+  blogs: [
+    {
+      id: '1',
+      name: 'string',
+      websiteUrl: 'https://something.org',
+      description: 'string',
+    },
+  ] as Blog[],
   posts: [] as Post[],
 }

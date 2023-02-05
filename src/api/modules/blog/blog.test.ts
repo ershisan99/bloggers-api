@@ -11,7 +11,7 @@ const updatedBlog = {
   websiteUrl: 'https://something-else.org',
 }
 
-const token = 'Basic YWRtaW46cXdlcnR5'
+export const token = 'Basic YWRtaW46cXdlcnR5'
 beforeAll(() => {
   request(app).delete('testing/')
 })

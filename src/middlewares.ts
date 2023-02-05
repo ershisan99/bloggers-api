@@ -3,6 +3,9 @@ import { NextFunction, Request, Response } from 'express'
 import ErrorResponse from './interfaces/ErrorResponse'
 import { ZodError } from 'zod'
 import RequestValidators from './interfaces/RequestValidators'
+import { httpStatusCodes } from './utils/http-status-codes'
+import { BaseError } from './error-handling/base-error'
+import { Api401Error } from './error-handling/api-401-error'
 
 export function notFound(req: Request, res: Response, next: NextFunction) {
   res.status(404)
@@ -18,8 +21,8 @@ export function errorHandler(
   next: NextFunction,
 ) {
   if (err instanceof ZodError) {
-    const statusCode = 400
-    res.status(statusCode)
+    res.status(httpStatusCodes.BAD_REQUEST)
+
     res.json({
       errorsMessages: err.issues.map((issue) => ({
         message: issue.message,
@@ -28,7 +31,19 @@ export function errorHandler(
     })
     return
   }
+
+  if (err instanceof BaseError) {
+    res.status(err.statusCode)
+
+    res.json({
+      errorsMessages: [{ message: err.name }],
+    })
+
+    return
+  }
+
   const statusCode = res.statusCode !== 200 ? res.statusCode : 500
+
   res.status(statusCode)
   res.json({
     errorsMessages: [{ message: err.message }],
@@ -72,8 +87,7 @@ export function validateBasicAuth(
     login !== auth.login ||
     password !== auth.password
   ) {
-    res.status(401).send('Authentication required.')
-    return
+    throw new Api401Error('Unauthorized')
   }
 
   return next()
