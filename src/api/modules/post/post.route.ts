@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import {
   createPostHandler,
+  deletePostHandler,
   getPostHandler,
   getPostsHandler,
   updatePostHandler,
@@ -23,8 +24,10 @@ postRouter.post(
 )
 
 postRouter.put(
-  '/',
+  '/:id',
   validateBasicAuth,
   validateRequest({ body: CreatePostInputSchema, params: ParamsWithId }),
   updatePostHandler,
 )
+
+postRouter.delete('/', validateBasicAuth, deletePostHandler)

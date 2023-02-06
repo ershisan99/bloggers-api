@@ -46,3 +46,13 @@ export async function updatePost(post: CreatePostInput, postId: string) {
     id: postId,
   }
 }
+
+export async function deletePost(postId: string) {
+  const postIndex = db.posts.findIndex((p) => p.id === postId)
+
+  if (postIndex === -1) {
+    throw new Api404Error('Post not found')
+  }
+
+  db.posts.splice(postIndex, 1)
+}

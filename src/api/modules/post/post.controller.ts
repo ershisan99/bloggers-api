@@ -1,4 +1,10 @@
-import { createPost, findPostById, findPosts, updatePost } from './post.service'
+import {
+  createPost,
+  deletePost,
+  findPostById,
+  findPosts,
+  updatePost,
+} from './post.service'
 import { Request, Response } from 'express'
 import { httpStatusCodes } from '../../../utils/http-status-codes'
 export async function getPostsHandler(req: Request, res: Response) {
@@ -17,5 +23,10 @@ export async function getPostHandler(req: Request, res: Response) {
 
 export async function updatePostHandler(req: Request, res: Response) {
   await updatePost(req.body, req.params.id)
+  res.status(httpStatusCodes.NO_CONTENT)
+}
+
+export async function deletePostHandler(req: Request, res: Response) {
+  await deletePost(req.params.id)
   res.status(httpStatusCodes.NO_CONTENT)
 }
