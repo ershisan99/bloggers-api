@@ -50,7 +50,7 @@ export async function deletePostHandler(
 ) {
   try {
     await deletePost(req.params.id)
-    res.status(httpStatusCodes.NO_CONTENT)
+    res.sendStatus(httpStatusCodes.NO_CONTENT)
   } catch (err) {
     next(err)
   }
