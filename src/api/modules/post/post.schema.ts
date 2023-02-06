@@ -6,24 +6,30 @@ export const PostSchema = z.object({
 
   title: z
     .string({ required_error: 'Title is required' })
+    .trim()
     .max(30, { message: 'Title is too long.' }),
 
   shortDescription: z
     .string({
       required_error: 'Short description is required',
     })
+    .trim()
     .max(100, { message: 'Short description is too long.' }),
 
-  content: z.string({ required_error: 'Content is required' }).max(1000, {
-    message: 'Content is too long.',
-  }),
+  content: z
+    .string({ required_error: 'Content is required' })
+    .trim()
+    .max(1000, {
+      message: 'Content is too long.',
+    }),
 
-  blogId: z
-    .string({ required_error: 'Blog id is required' })
-    .refine(async (id) => {
+  blogId: z.string({ required_error: 'Blog id is required' }).refine(
+    async (id) => {
       const blog = await findBlogById(id)
       return !!blog
-    }),
+    },
+    { message: 'Blog not found' },
+  ),
 
   blogName: z.string({ required_error: 'Blog name is required' }),
 })
