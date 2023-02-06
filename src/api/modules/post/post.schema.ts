@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { findBlogById } from '../blog/blog.service'
 
 export const PostSchema = z.object({
   id: z.string({ required_error: 'Id is required' }),
@@ -17,7 +18,12 @@ export const PostSchema = z.object({
     message: 'Content is too long.',
   }),
 
-  blogId: z.string({ required_error: 'Blog id is required' }),
+  blogId: z
+    .string({ required_error: 'Blog id is required' })
+    .refine(async (id) => {
+      const blog = await findBlogById(id)
+      return !!blog
+    }),
 
   blogName: z.string({ required_error: 'Blog name is required' }),
 })
