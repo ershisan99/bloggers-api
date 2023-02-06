@@ -5,8 +5,9 @@ import {
   findPosts,
   updatePost,
 } from './post.service'
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { httpStatusCodes } from '../../../utils/http-status-codes'
+
 export async function getPostsHandler(req: Request, res: Response) {
   const posts = await findPosts()
   res.json(posts)
@@ -16,17 +17,41 @@ export async function createPostHandler(req: Request, res: Response) {
   res.status(httpStatusCodes.CREATED).json(posts)
 }
 
-export async function getPostHandler(req: Request, res: Response) {
-  const post = await findPostById(req.params.id)
-  res.json(post)
+export async function getPostHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const post = await findPostById(req.params.id)
+    res.json(post)
+  } catch (err) {
+    next(err)
+  }
 }
 
-export async function updatePostHandler(req: Request, res: Response) {
-  await updatePost(req.body, req.params.id)
-  res.status(httpStatusCodes.NO_CONTENT)
+export async function updatePostHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    await updatePost(req.body, req.params.id)
+    res.sendStatus(httpStatusCodes.NO_CONTENT)
+  } catch (err) {
+    next(err)
+  }
 }
 
-export async function deletePostHandler(req: Request, res: Response) {
-  await deletePost(req.params.id)
-  res.status(httpStatusCodes.NO_CONTENT)
+export async function deletePostHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    await deletePost(req.params.id)
+    res.status(httpStatusCodes.NO_CONTENT)
+  } catch (err) {
+    next(err)
+  }
 }

@@ -5,12 +5,16 @@ export class BaseError extends Error {
 
   public readonly statusCode: HttpStatusCodes
 
-  constructor(name: string, statusCode: HttpStatusCodes, description: string) {
+  constructor(
+    message: string,
+    statusCode: HttpStatusCodes,
+    description: string,
+  ) {
     super(description)
 
     Object.setPrototypeOf(this, new.target.prototype)
-    this.message = name
+    this.message = message
     this.statusCode = statusCode
-    Error.captureStackTrace(this)
+    // Error.captureStackTrace(this)
   }
 }

@@ -33,10 +33,11 @@ export function errorHandler(
   }
 
   if (err instanceof BaseError) {
+    console.log(err.message)
     res.status(err.statusCode)
 
     res.json({
-      errorsMessages: [{ message: err.name }],
+      errorsMessages: [{ message: err.message }],
     })
 
     return

@@ -33,18 +33,20 @@ export async function updatePost(post: CreatePostInput, postId: string) {
   if (!blogName) {
     throw new Api404Error('Blog not found')
   }
-
   const postIndex = db.posts.findIndex((p) => p.id === postId)
-
   if (postIndex === -1) {
     throw new Api404Error('Post not found')
   }
 
-  db.posts[postIndex] = {
+  const updatedPost: Post = {
     ...post,
     blogName,
     id: postId,
   }
+
+  db.posts[postIndex] = updatedPost
+
+  return updatedPost
 }
 
 export async function deletePost(postId: string) {
