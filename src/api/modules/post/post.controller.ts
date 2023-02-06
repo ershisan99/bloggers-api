@@ -7,6 +7,7 @@ import {
 } from './post.service'
 import { NextFunction, Request, Response } from 'express'
 import { httpStatusCodes } from '../../../utils/http-status-codes'
+import { Api404Error } from '../../../error-handling/api-404-error'
 
 export async function getPostsHandler(req: Request, res: Response) {
   const posts = await findPosts()
@@ -24,6 +25,9 @@ export async function getPostHandler(
 ) {
   try {
     const post = await findPostById(req.params.id)
+    if (!post) {
+      throw new Api404Error('Post not found')
+    }
     res.json(post)
   } catch (err) {
     next(err)
