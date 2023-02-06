@@ -30,4 +30,4 @@ postRouter.put(
   updatePostHandler,
 )
 
-postRouter.delete('/', validateBasicAuth, deletePostHandler)
+postRouter.delete('/:id', validateBasicAuth, deletePostHandler)
