@@ -15,7 +15,7 @@ export const PostSchema = z.object({
       required_error: 'Short description is required',
     })
     .trim()
-    .min(10, { message: 'Short description is too short.' })
+    .min(1, { message: 'Short description is too short.' })
     .max(100, { message: 'Short description is too long.' }),
 
   content: z
