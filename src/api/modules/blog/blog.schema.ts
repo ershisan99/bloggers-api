@@ -21,6 +21,7 @@ export const BlogSchema = z.object({
     .max(100, 'Website url is too long')
     .regex(websiteRegex, 'Website url is invalid'),
   createdAt: z.date(),
+  isMembership: z.boolean(),
 })
 
 export type Blog = z.infer<typeof BlogSchema>
@@ -28,5 +29,6 @@ export type Blog = z.infer<typeof BlogSchema>
 export const CreateBlogInputSchema = BlogSchema.omit({
   id: true,
   createdAt: true,
+  isMembership: true,
 })
 export type CreateBlogInput = z.infer<typeof CreateBlogInputSchema>

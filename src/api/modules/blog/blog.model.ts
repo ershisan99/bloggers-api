@@ -21,6 +21,11 @@ const blogSchema = new Schema(
       maxlength: 100,
       match: websiteRegex,
     },
+    isMembership: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   {
     timestamps: { createdAt: true, updatedAt: false },
