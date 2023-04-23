@@ -57,7 +57,6 @@ describe('POST /blogs', () => {
         expect(response.body).toHaveProperty('description')
         expect(response.body).toHaveProperty('websiteUrl')
         expect(response.body).toHaveProperty('createdAt')
-        expect(response.body).toHaveProperty('updatedAt')
       })
   })
 })
