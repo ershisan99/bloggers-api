@@ -1,4 +1,4 @@
-import { Schema, InferSchemaType, model } from 'mongoose'
+import { model, Schema, InferSchemaType } from 'mongoose'
 import { websiteRegex } from './blog.schema'
 
 const blogSchema = new Schema(
@@ -23,7 +23,7 @@ const blogSchema = new Schema(
     },
   },
   {
-    timestamps: true,
+    timestamps: { createdAt: true, updatedAt: false },
   },
 )
 blogSchema.virtual('id').get(function () {
@@ -37,12 +37,9 @@ blogSchema.set('toJSON', {
     delete ret._id
   },
 })
-interface IBlog extends Document {
+interface IBlog extends InferSchemaType<typeof blogSchema> {
   id: string
-  name: string
-  description: string
-  websiteUrl: string
+  createdAt: Date
 }
 
-export type Blog = InferSchemaType<typeof blogSchema>
 export const BlogModel = model<IBlog>('Blog', blogSchema)

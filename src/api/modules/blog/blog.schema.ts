@@ -20,11 +20,13 @@ export const BlogSchema = z.object({
     .string({ required_error: 'Website url is required' })
     .max(100, 'Website url is too long')
     .regex(websiteRegex, 'Website url is invalid'),
+  createdAt: z.date(),
 })
 
 export type Blog = z.infer<typeof BlogSchema>
 
 export const CreateBlogInputSchema = BlogSchema.omit({
   id: true,
+  createdAt: true,
 })
 export type CreateBlogInput = z.infer<typeof CreateBlogInputSchema>
