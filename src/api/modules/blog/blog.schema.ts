@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const websiteRegex = new RegExp(
+export const websiteRegex = new RegExp(
   '^https://([a-zA-Z0-9_-]+.)+[a-zA-Z0-9_-]+(/[a-zA-Z0-9_-]+)*/?$',
 )
 

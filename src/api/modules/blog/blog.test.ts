@@ -1,7 +1,8 @@
 import request from 'supertest'
 import app from '../../../app'
-import { it, describe, expect, beforeAll } from 'vitest'
+import { it, describe, expect, beforeAll, beforeEach, afterEach } from 'vitest'
 import { Blog } from './blog.schema'
+import mongoose from 'mongoose'
 
 let createdBlog: Blog
 
@@ -14,6 +15,15 @@ const updatedBlog = {
 export const token = 'Basic YWRtaW46cXdlcnR5'
 beforeAll(() => {
   request(app).delete('testing/')
+})
+beforeEach(async () => {
+  await mongoose.connect(process.env.MONGODB_URI || '')
+  console.log('Connected to MongoDB')
+})
+
+/* Closing database connection after each test. */
+afterEach(async () => {
+  await mongoose.connection.close()
 })
 
 describe('POST /blogs', () => {
@@ -46,6 +56,8 @@ describe('POST /blogs', () => {
         expect(response.body).toHaveProperty('name')
         expect(response.body).toHaveProperty('description')
         expect(response.body).toHaveProperty('websiteUrl')
+        expect(response.body).toHaveProperty('createdAt')
+        expect(response.body).toHaveProperty('updatedAt')
       })
   })
 })
@@ -57,7 +69,7 @@ describe('GET /blogs', () => {
       .set('Accept', 'application/json')
       .expect(200)
       .then((response) => {
-        expect(response.body).toEqual([createdBlog])
+        expect(response.body).toContainEqual(createdBlog)
       })
   })
 })
@@ -65,7 +77,7 @@ describe('GET /blogs', () => {
 describe('GET /blogs/:id', () => {
   it('responds with an error if the blog is not found', () => {
     return request(app)
-      .get('/blogs/4000')
+      .get('/blogs/64459bbab8c36e18b2caa2d9')
       .set('Accept', 'application/json')
       .expect(404)
       .then((response) => {
@@ -93,7 +105,7 @@ describe('PUT /blogs/:id', () => {
   })
   it('responds with an error if the blog is not found', () => {
     return request(app)
-      .put('/blogs/4000')
+      .put('/blogs/64459fe4e922739af6f6f111')
       .set('Accept', 'application/json')
       .set('Authorization', token)
       .send(updatedBlog)
@@ -121,7 +133,7 @@ describe('DELETE /blogs/:id', () => {
   })
   it('responds with an error if the blog is not found', () => {
     return request(app)
-      .delete('/blogs/4000')
+      .delete('/blogs/64459fe4e922739af6f6f111')
       .set('Accept', 'application/json')
       .set('Authorization', token)
       .expect(404)

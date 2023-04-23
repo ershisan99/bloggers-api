@@ -1,46 +1,25 @@
 import { Blog, CreateBlogInput } from './blog.schema'
-import { db } from '../../db'
-import { nanoid } from 'nanoid'
-const blogs = db.blogs
+import { BlogModel } from './blog.model'
 
 export async function findBlogs(): Promise<Blog[]> {
-  return blogs
+  return BlogModel.find()
 }
 
 export async function createBlog(blog: CreateBlogInput): Promise<Blog> {
-  const newBlog = {
-    id: nanoid(),
-    ...blog,
-  }
-  blogs.push(newBlog)
-  return newBlog
+  return BlogModel.create(blog)
 }
 
-export async function findBlogById(id: string): Promise<Blog | undefined> {
-  return blogs.find((blog) => blog.id === id)
+export async function findBlogById(id: string): Promise<Blog | null> {
+  return BlogModel.findById(id)
 }
 
 export async function updateBlogById(
   id: string,
   newBlog: CreateBlogInput,
-): Promise<Blog | undefined> {
-  let blogToUpdate = blogs.findIndex((blog) => blog.id === id)
-
-  if (blogToUpdate !== -1) {
-    blogs.splice(blogToUpdate, 1, {
-      ...blogs[blogToUpdate],
-      ...newBlog,
-    })
-    return blogs[blogToUpdate]
-  }
-
-  return undefined
+): Promise<Blog | null> {
+  return BlogModel.findByIdAndUpdate(id, newBlog, { new: true })
 }
 
-export async function deleteBlogById(id: string): Promise<Blog | undefined> {
-  const blogIndex = blogs.findIndex((blog) => blog.id === id)
-  if (blogIndex !== -1) {
-    return blogs.splice(blogIndex, 1)[0]
-  }
-  return undefined
+export async function deleteBlogById(id: string): Promise<Blog | null> {
+  return BlogModel.findByIdAndDelete(id)
 }
