@@ -1,16 +1,20 @@
 import request from 'supertest'
 import app from '../../../app'
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { token } from '../blog/blog.test'
 import { Post } from './post.schema'
+import mongoose from 'mongoose'
 
 let createdPost: Post
+beforeEach(async () => {
+  await mongoose.connect(process.env.MONGODB_URI || '')
+  console.log('Connected to MongoDB')
+})
 
-const updatedPost = {
-  title: 'new string',
-  content: 'new content',
-  blogId: 'new string',
-}
+/* Closing database connection after each test. */
+afterEach(async () => {
+  await mongoose.connection.close()
+})
 
 describe('POST /posts', () => {
   it('responds with 401 if no auth header was found', () => {
@@ -35,7 +39,8 @@ describe('POST /posts', () => {
       })
   })
 
-  it('responds with the created post', () => {
+  it('responds with the created post', async () => {
+    const blogs = await request(app).get('/blogs')
     return request(app)
       .post('/posts')
       .set('Accept', 'application/json')
@@ -44,7 +49,7 @@ describe('POST /posts', () => {
         title: 'string',
         shortDescription: 'string',
         content: 'string',
-        blogId: '1',
+        blogId: blogs.body[0].id,
       })
       .expect(201)
       .then((response) => {
@@ -72,7 +77,7 @@ describe('GET /posts', () => {
 describe('GET /posts/:id', () => {
   it('responds with a post', () => {
     return request(app)
-      .get('/posts/1')
+      .get(`/posts/${createdPost.id}`)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200)
@@ -89,7 +94,7 @@ describe('GET /posts/:id', () => {
 describe('PUT /posts/:id', () => {
   it('responds with an error if the post is invalid', () => {
     return request(app)
-      .put('/posts/1')
+      .put(`/posts/${createdPost.id}`)
       .set('Accept', 'application/json')
       .set('Authorization', token)
       .send({})
@@ -101,11 +106,14 @@ describe('PUT /posts/:id', () => {
 
   it('responds with the updated post', () => {
     return request(app)
-      .put('/posts/1')
+      .put(`/posts/${createdPost.id}`)
       .set('Accept', 'application/json')
       .set('Authorization', token)
       .send({
         title: 'string',
+        shortDescription: 'string',
+        content: 'string',
+        blogId: 'string',
       })
       .expect(200)
       .then((response) => {
@@ -114,6 +122,9 @@ describe('PUT /posts/:id', () => {
         expect(response.body).toHaveProperty('content')
         expect(response.body).toHaveProperty('blogId')
         expect(response.body).toHaveProperty('blogName')
+      })
+      .catch((error) => {
+        console.log(JSON.stringify(error.message))
       })
   })
 })

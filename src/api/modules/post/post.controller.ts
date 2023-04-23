@@ -13,9 +13,17 @@ export async function getPostsHandler(req: Request, res: Response) {
   const posts = await findPosts()
   res.json(posts)
 }
-export async function createPostHandler(req: Request, res: Response) {
-  const posts = await createPost(req.body)
-  res.status(httpStatusCodes.CREATED).json(posts)
+export async function createPostHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const posts = await createPost(req.body)
+    res.status(httpStatusCodes.CREATED).json(posts)
+  } catch (err) {
+    next(err)
+  }
 }
 
 export async function getPostHandler(

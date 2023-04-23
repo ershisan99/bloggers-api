@@ -1,8 +1,10 @@
-import { db } from '../../db'
 import { Request, Response } from 'express'
+import { BlogModel } from '../blog/blog.model'
+import { PostModel } from '../post/post.model'
 
 export async function deleteAllDataHandler(req: Request, res: Response) {
-  db.videos.length = 0
-  db.blogs.length = 0
+  BlogModel.deleteMany()
+  PostModel.deleteMany()
+
   res.sendStatus(204)
 }
