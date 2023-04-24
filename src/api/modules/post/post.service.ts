@@ -45,9 +45,8 @@ export async function updatePost(post: CreatePostInput, postId: string) {
 }
 
 export async function deletePost(postId: string) {
-  try {
-    await PostModel.findByIdAndDelete(postId)
-  } catch (err) {
+  const removedPost = await PostModel.findByIdAndDelete(postId)
+  if (!removedPost) {
     throw new Api404Error('Post not found')
   }
 }
