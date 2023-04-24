@@ -1,4 +1,3 @@
-import { db } from '../../db'
 import { CreatePostInput } from './post.schema'
 import { Api404Error } from '../../../error-handling/api-404-error'
 import { PostModel } from './post.model'
