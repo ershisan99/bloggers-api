@@ -46,11 +46,9 @@ export async function updatePost(post: CreatePostInput, postId: string) {
 }
 
 export async function deletePost(postId: string) {
-  const postIndex = db.posts.findIndex((p) => p.id === postId)
-
-  if (postIndex === -1) {
+  try {
+    await PostModel.findByIdAndDelete(postId)
+  } catch (err) {
     throw new Api404Error('Post not found')
   }
-
-  db.posts.splice(postIndex, 1)
 }
