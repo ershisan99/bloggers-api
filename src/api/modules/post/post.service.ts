@@ -31,7 +31,7 @@ export async function updatePost(post: CreatePostInput, postId: string) {
     throw new Api404Error('Blog not found')
   }
   try {
-    return await PostModel.findByIdAndUpdate(
+    const updatedPost = await PostModel.findByIdAndUpdate(
       postId,
       {
         ...post,
@@ -39,6 +39,9 @@ export async function updatePost(post: CreatePostInput, postId: string) {
       },
       { new: true },
     )
+    if (!updatedPost) {
+      throw new Api404Error('Post not found')
+    }
   } catch (err) {
     throw new Api404Error('Post not found')
   }
